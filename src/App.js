@@ -1,4 +1,4 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
 
 function App() {
@@ -7,14 +7,20 @@ function App() {
 
   const addTask = () => {
     if (newTask.trim() !== "") {
-      setTasks([...tasks, newTask]);
+      setTasks([...tasks, { text: newTask, completed: false }]);
       setNewTask("");
     }
   };
 
+  const toggleTask = (index) => {
+    const updatedTasks = [...tasks];
+    updatedTasks[index].completed = !updatedTasks[index].completed;
+    setTasks(updatedTasks);
+  };
+
   return (
     <div className="App">
-      <h1>React To-Do List</h1>
+      <h1>React To-Do List!</h1>
       <input
         type="text"
         value={newTask}
@@ -23,7 +29,14 @@ function App() {
       <button onClick={addTask}>Add Task</button>
       <ul>
         {tasks.map((task, index) => (
-          <li key={index}>{task}</li>
+          <li key={index}>
+            <input
+              type="checkbox"
+              checked={task.completed}
+              onChange={() => toggleTask(index)}
+            />
+            {task.text}
+          </li>
         ))}
       </ul>
     </div>
